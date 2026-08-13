@@ -12,9 +12,11 @@ abstract final class AppColors {
   static const textPrimary = Color(0xFF0A0A0A);
   static const textSecondary = Color(0xFF5D5F5F);
   static const mutedText = Color(0xFFC4C7C7);
+  static const link = Color(0xFF2563EB);
+  static const linkPressed = Color(0xFFEFF6FF);
 
   static const success = Color(0xFF238636);
   static const warning = Color(0xFFF59E0B);
   static const error = Color(0xFFD92D20);
-  static const border = Color(0xFFEAECF0);
+  static const border = Color(0xFFC4C7C7);
 }

@@ -19,7 +19,7 @@ final authRoutes = <RouteBase>[
   GoRoute(
     path: AppRoutes.register,
     name: AppRouteNames.register,
-    builder: (context, state) => const SignupScreen(),
+    builder: (context, state) => const SignUpScreen(),
   ),
   GoRoute(
     path: AppRoutes.forgotPassword,

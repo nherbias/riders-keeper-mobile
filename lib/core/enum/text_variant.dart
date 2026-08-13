@@ -1,0 +1,18 @@
+enum MDTextVariant {
+  display,
+  displayMedium,
+  displaySmall,
+  headline,
+  headlineMedium,
+  headlineSmall,
+  title,
+  titleMedium,
+  titleSmall,
+  body,
+  bodyMedium,
+  bodySmall,
+  label,
+  labelMedium,
+  labelSmall,
+  caption,
+}

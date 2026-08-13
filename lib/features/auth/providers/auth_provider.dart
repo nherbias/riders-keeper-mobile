@@ -8,7 +8,7 @@ final authProvider = NotifierProvider<AuthNotifier, AuthStatus>(
 class AuthNotifier extends Notifier<AuthStatus> {
   @override
   AuthStatus build() {
-    _initialize();
+    Future.microtask(_initialize);
     return AuthStatus.initial;
   }
 
