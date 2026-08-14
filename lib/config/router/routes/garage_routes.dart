@@ -12,6 +12,17 @@ final homeRoutes = <RouteBase>[
     name: AppRouteNames.home,
     builder: (context, state) => const HomeScreen(),
   ),
+];
+
+final garageRoutes = <RouteBase>[
+  GoRoute(
+    path: AppRoutes.garage,
+    name: AppRouteNames.garage,
+    builder: (context, state) => const MotorcyclesScreen(),
+  ),
+];
+
+final secondaryNavigationRoutes = <RouteBase>[
   GoRoute(
     path: AppRoutes.needsAttention,
     name: AppRouteNames.needsAttention,
@@ -21,14 +32,6 @@ final homeRoutes = <RouteBase>[
     path: AppRoutes.predictions,
     name: AppRouteNames.predictions,
     builder: (context, state) => const PredictionsScreen(),
-  ),
-];
-
-final garageRoutes = <RouteBase>[
-  GoRoute(
-    path: AppRoutes.garage,
-    name: AppRouteNames.garage,
-    builder: (context, state) => const MotorcyclesScreen(),
   ),
   GoRoute(
     path: AppRoutes.addMotorcycle,
