@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:riders_keeper/core/constants/theme/app_colors.dart';
+import 'package:riders_keeper/core/design_system/atoms/md_text/md_text.dart';
+import 'package:riders_keeper/core/enum/text_variant.dart';
 
 class MDScaffold extends StatelessWidget {
   const MDScaffold({
     required this.body,
     this.appBar,
+    this.appBarTitle,
+    this.appBarLeading,
+    this.appBarActions,
     this.bottomNavigationBar,
     this.drawer,
     this.endDrawer,
@@ -20,6 +25,9 @@ class MDScaffold extends StatelessWidget {
 
   final Widget body;
   final PreferredSizeWidget? appBar;
+  final String? appBarTitle;
+  final Widget? appBarLeading;
+  final List<Widget>? appBarActions;
   final Widget? bottomNavigationBar;
   final Widget? drawer;
   final Widget? endDrawer;
@@ -33,12 +41,28 @@ class MDScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final resolvedAppBar =
+        appBar ??
+        (appBarTitle == null
+            ? null
+            : AppBar(
+                backgroundColor: AppColors.primary,
+                foregroundColor: AppColors.surface,
+                leading: appBarLeading,
+                title: MDText(
+                  appBarTitle!,
+                  variant: MDTextVariant.title,
+                  color: AppColors.surface,
+                  fontWeight: FontWeight.w800,
+                ),
+                actions: appBarActions,
+              ));
     final content = useSafeArea
         ? SafeArea(minimum: safeAreaMinimum, child: body)
         : body;
 
     return Scaffold(
-      appBar: appBar,
+      appBar: resolvedAppBar,
       backgroundColor: AppColors.background,
       bottomNavigationBar: bottomNavigationBar,
       drawer: drawer,

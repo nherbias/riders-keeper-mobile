@@ -5,10 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:riders_keeper/config/router/app_navigation_provider.dart';
 import 'package:riders_keeper/config/router/app_routes.dart';
 import 'package:riders_keeper/config/router/routes/auth_routes.dart';
-import 'package:riders_keeper/config/router/routes/garage_routes.dart';
-import 'package:riders_keeper/config/router/routes/maintenance_routes.dart';
-import 'package:riders_keeper/config/router/routes/profile_routes.dart';
-import 'package:riders_keeper/config/router/routes/schedule_routes.dart';
+import 'package:riders_keeper/config/router/routes/main_navigation_routes.dart';
 import 'package:riders_keeper/features/auth/providers/auth_status.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'rootNavKey');
@@ -44,13 +41,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 
       return null;
     },
-    routes: [
-      ...authRoutes,
-      ...homeRoutes,
-      ...garageRoutes,
-      ...profileRoutes,
-      ...calendarRoutes,
-    ],
+    routes: [...authRoutes, ...mainNavigationRoutes],
     errorBuilder: (context, state) => Scaffold(
       body: Center(
         child: Text(
