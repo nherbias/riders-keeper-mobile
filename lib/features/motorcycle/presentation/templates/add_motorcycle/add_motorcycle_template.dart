@@ -8,6 +8,9 @@ import 'package:riders_keeper/core/enum/text_variant.dart';
 
 class AddMotorcycleTemplate extends StatelessWidget {
   const AddMotorcycleTemplate({
+    required this.appBarTitle,
+    required this.submitLabel,
+    required this.submitIcon,
     required this.formKey,
     required this.brandController,
     required this.modelController,
@@ -28,6 +31,9 @@ class AddMotorcycleTemplate extends StatelessWidget {
     super.key,
   });
 
+  final String appBarTitle;
+  final String submitLabel;
+  final IconData submitIcon;
   final GlobalKey<FormState> formKey;
   final TextEditingController brandController;
   final TextEditingController modelController;
@@ -54,7 +60,7 @@ class AddMotorcycleTemplate extends StatelessWidget {
         if (!didPop && !isLoading) onBack();
       },
       child: MDScaffold(
-        appBarTitle: 'Add Motorcycle',
+        appBarTitle: appBarTitle,
         appBarLeading: IconButton(
           tooltip: 'Back to Garage',
           onPressed: isLoading ? null : onBack,
@@ -158,8 +164,8 @@ class AddMotorcycleTemplate extends StatelessWidget {
                     ),
                     const SizedBox(height: 30),
                     MDButton(
-                      label: 'ADD TO GARAGE',
-                      icon: Icons.two_wheeler_rounded,
+                      label: submitLabel,
+                      icon: submitIcon,
                       iconAtStart: true,
                       height: 56,
                       isLoading: isLoading,

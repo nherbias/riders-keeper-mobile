@@ -13,6 +13,8 @@ class MotorcyclesTemplate extends StatelessWidget {
     required this.onMotorcyclePressed,
     required this.onAddPhotoPressed,
     required this.onAddMotorcyclePressed,
+    required this.onUpdateOdometerPressed,
+    required this.odometerReminderPlateNumbers,
     this.isLoading = false,
     this.errorMessage,
     this.onRetry,
@@ -25,6 +27,8 @@ class MotorcyclesTemplate extends StatelessWidget {
   final ValueChanged<MotorcycleData> onMotorcyclePressed;
   final ValueChanged<MotorcycleData> onAddPhotoPressed;
   final VoidCallback onAddMotorcyclePressed;
+  final Set<String> odometerReminderPlateNumbers;
+  final ValueChanged<MotorcycleData> onUpdateOdometerPressed;
   final VoidCallback? onRetry;
 
   @override
@@ -81,6 +85,12 @@ class MotorcyclesTemplate extends StatelessWidget {
                         isActive: motorcycle.isActive,
                         onTap: () => onMotorcyclePressed(motorcycle),
                         onAddPhoto: () => onAddPhotoPressed(motorcycle),
+                        onUpdateOdometer:
+                            odometerReminderPlateNumbers.contains(
+                              motorcycle.plateNumber,
+                            )
+                            ? () => onUpdateOdometerPressed(motorcycle)
+                            : null,
                       ),
                       const SizedBox(height: 16),
                     ],

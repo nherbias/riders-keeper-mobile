@@ -19,6 +19,7 @@ class LogMaintenanceTemplate extends StatelessWidget {
     required this.services,
     required this.selectedService,
     required this.selectedStatus,
+    required this.availableStatuses,
     required this.isLoading,
     required this.odometerValidator,
     required this.costValidator,
@@ -39,6 +40,7 @@ class LogMaintenanceTemplate extends StatelessWidget {
   final List<String> services;
   final String selectedService;
   final ServiceRecordStatus selectedStatus;
+  final List<ServiceRecordStatus> availableStatuses;
   final bool isLoading;
   final FormFieldValidator<String> odometerValidator;
   final FormFieldValidator<String> costValidator;
@@ -144,6 +146,7 @@ class LogMaintenanceTemplate extends StatelessWidget {
                   const SizedBox(height: 18),
                   _StatusSelector(
                     selectedStatus: selectedStatus,
+                    availableStatuses: availableStatuses,
                     enabled: !isLoading,
                     onSelected: onStatusChanged,
                   ),
@@ -302,11 +305,13 @@ class _ServicePicker extends StatelessWidget {
 class _StatusSelector extends StatelessWidget {
   const _StatusSelector({
     required this.selectedStatus,
+    required this.availableStatuses,
     required this.enabled,
     required this.onSelected,
   });
 
   final ServiceRecordStatus selectedStatus;
+  final List<ServiceRecordStatus> availableStatuses;
   final bool enabled;
   final ValueChanged<ServiceRecordStatus> onSelected;
 
@@ -325,7 +330,7 @@ class _StatusSelector extends StatelessWidget {
         Wrap(
           spacing: 8,
           runSpacing: 8,
-          children: ServiceRecordStatus.values
+          children: availableStatuses
               .map((status) {
                 final selected = status == selectedStatus;
                 final label = switch (status) {

@@ -35,6 +35,10 @@ Widget logMaintenancePreview() {
       ],
       selectedService: 'Oil Change',
       selectedStatus: ServiceRecordStatus.completed,
+      availableStatuses: const [
+        ServiceRecordStatus.completed,
+        ServiceRecordStatus.inspected,
+      ],
       isLoading: false,
       odometerValidator: (_) => null,
       costValidator: (_) => null,

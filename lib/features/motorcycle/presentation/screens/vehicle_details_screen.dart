@@ -4,6 +4,7 @@ import 'package:riders_keeper/config/router/app_router.dart';
 import 'package:riders_keeper/config/router/app_routes.dart';
 import 'package:riders_keeper/core/types/home_dashboard_types.dart';
 import 'package:riders_keeper/core/types/motorcycle_draft.dart';
+import 'package:riders_keeper/core/types/motorcycle_form_arguments.dart';
 import 'package:riders_keeper/core/types/motorcycle_types.dart';
 import 'package:riders_keeper/features/motorcycle/presentation/templates/vehicle_details/vehicle_details_template.dart';
 
@@ -43,13 +44,17 @@ class _VehicleDetailsScreenState extends ConsumerState<VehicleDetailsScreen> {
         .read(appRouterProvider)
         .go(
           AppRoutes.addMotorcycle,
-          extra: MotorcycleDraft(
-            brand: motorcycle.brand,
-            model: motorcycle.model,
-            year: '2024',
-            plateNumber: motorcycle.plateNumber,
-            odometerKm: motorcycle.odometerKm,
-            nickname: motorcycle.model,
+          extra: MotorcycleFormArguments(
+            mode: MotorcycleFormMode.edit,
+            originalMotorcycle: motorcycle,
+            draft: MotorcycleDraft(
+              brand: motorcycle.brand,
+              model: motorcycle.model,
+              year: '2024',
+              plateNumber: motorcycle.plateNumber,
+              odometerKm: motorcycle.odometerKm,
+              nickname: motorcycle.model,
+            ),
           ),
         );
   }

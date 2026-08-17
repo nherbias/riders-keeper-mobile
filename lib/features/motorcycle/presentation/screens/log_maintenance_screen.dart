@@ -152,6 +152,10 @@ class _LogMaintenanceScreenState extends ConsumerState<LogMaintenanceScreen> {
       services: _services,
       selectedService: _selectedService,
       selectedStatus: _selectedStatus,
+      availableStatuses: const [
+        ServiceRecordStatus.completed,
+        ServiceRecordStatus.inspected,
+      ],
       isLoading: _isLoading,
       odometerValidator: _validateOdometer,
       costValidator: _validateCost,

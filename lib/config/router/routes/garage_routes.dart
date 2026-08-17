@@ -10,6 +10,7 @@ import 'package:riders_keeper/features/motorcycle/presentation/screens/vehicle_d
 import 'package:riders_keeper/features/motorcycle/presentation/screens/service_history_screen.dart';
 import 'package:riders_keeper/features/motorcycle/presentation/screens/log_maintenance_screen.dart';
 import 'package:riders_keeper/core/types/motorcycle_draft.dart';
+import 'package:riders_keeper/core/types/motorcycle_form_arguments.dart';
 import 'package:riders_keeper/core/types/motorcycle_types.dart';
 
 final homeRoutes = <RouteBase>[
@@ -42,11 +43,20 @@ final secondaryNavigationRoutes = <RouteBase>[
   GoRoute(
     path: AppRoutes.addMotorcycle,
     name: AppRouteNames.addMotorcycle,
-    builder: (context, state) => AddMotorcycleScreen(
-      initialDraft: state.extra is MotorcycleDraft
-          ? state.extra! as MotorcycleDraft
-          : null,
-    ),
+    builder: (context, state) {
+      final arguments = state.extra is MotorcycleFormArguments
+          ? state.extra! as MotorcycleFormArguments
+          : null;
+      return AddMotorcycleScreen(
+        initialDraft:
+            arguments?.draft ??
+            (state.extra is MotorcycleDraft
+                ? state.extra! as MotorcycleDraft
+                : null),
+        mode: arguments?.mode ?? MotorcycleFormMode.create,
+        originalMotorcycle: arguments?.originalMotorcycle,
+      );
+    },
   ),
   GoRoute(
     path: AppRoutes.reviewMotorcycle,

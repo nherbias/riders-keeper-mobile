@@ -7,12 +7,21 @@ import 'package:riders_keeper/core/design_system/atoms/md_button/md_button.dart'
 import 'package:riders_keeper/core/design_system/atoms/md_text/md_text.dart';
 import 'package:riders_keeper/core/enum/text_variant.dart';
 import 'package:riders_keeper/core/types/motorcycle_draft.dart';
+import 'package:riders_keeper/core/types/motorcycle_form_arguments.dart';
+import 'package:riders_keeper/core/types/motorcycle_types.dart';
 import 'package:riders_keeper/features/motorcycle/presentation/templates/add_motorcycle/add_motorcycle_template.dart';
 
 class AddMotorcycleScreen extends ConsumerStatefulWidget {
-  const AddMotorcycleScreen({this.initialDraft, super.key});
+  const AddMotorcycleScreen({
+    this.initialDraft,
+    this.mode = MotorcycleFormMode.create,
+    this.originalMotorcycle,
+    super.key,
+  });
 
   final MotorcycleDraft? initialDraft;
+  final MotorcycleFormMode mode;
+  final MotorcycleData? originalMotorcycle;
 
   @override
   ConsumerState<AddMotorcycleScreen> createState() =>
@@ -31,6 +40,18 @@ class _AddMotorcycleScreenState extends ConsumerState<AddMotorcycleScreen> {
   final bool _isLoading = false;
   late final bool _hasSelectedPhoto;
   bool _isDirty = false;
+
+  bool get _isEditing => widget.mode == MotorcycleFormMode.edit;
+
+  void _navigateBack() {
+    if (_isEditing && widget.originalMotorcycle != null) {
+      ref
+          .read(appRouterProvider)
+          .go(AppRoutes.vehicleDetails, extra: widget.originalMotorcycle);
+      return;
+    }
+    ref.read(appRouterProvider).go(AppRoutes.garage);
+  }
 
   @override
   void initState() {
@@ -161,7 +182,7 @@ class _AddMotorcycleScreenState extends ConsumerState<AddMotorcycleScreen> {
 
   Future<void> _goBack() async {
     if (!_isDirty) {
-      ref.read(appRouterProvider).go(AppRoutes.garage);
+      _navigateBack();
       return;
     }
 
@@ -205,7 +226,7 @@ class _AddMotorcycleScreenState extends ConsumerState<AddMotorcycleScreen> {
     );
 
     if (shouldDiscard == true && mounted) {
-      ref.read(appRouterProvider).go(AppRoutes.garage);
+      _navigateBack();
     }
   }
 
@@ -223,12 +244,33 @@ class _AddMotorcycleScreenState extends ConsumerState<AddMotorcycleScreen> {
       hasPhoto: _hasSelectedPhoto,
     );
     _isDirty = false;
+    if (_isEditing) {
+      final original = widget.originalMotorcycle;
+      final updatedMotorcycle = MotorcycleData(
+        brand: draft.brand,
+        model: draft.model,
+        plateNumber: draft.plateNumber,
+        odometerKm: draft.odometerKm,
+        imageAsset: original?.imageAsset,
+        isActive: original?.isActive ?? false,
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Motorcycle details updated.')),
+      );
+      ref
+          .read(appRouterProvider)
+          .go(AppRoutes.vehicleDetails, extra: updatedMotorcycle);
+      return;
+    }
     ref.read(appRouterProvider).go(AppRoutes.reviewMotorcycle, extra: draft);
   }
 
   @override
   Widget build(BuildContext context) {
     return AddMotorcycleTemplate(
+      appBarTitle: _isEditing ? 'Edit Motorcycle' : 'Add Motorcycle',
+      submitLabel: _isEditing ? 'SAVE CHANGES' : 'ADD TO GARAGE',
+      submitIcon: _isEditing ? Icons.save_outlined : Icons.two_wheeler_rounded,
       formKey: _formKey,
       brandController: _brandController,
       modelController: _modelController,
