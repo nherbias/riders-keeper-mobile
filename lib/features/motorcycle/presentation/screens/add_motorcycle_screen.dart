@@ -6,10 +6,13 @@ import 'package:riders_keeper/core/constants/theme/app_colors.dart';
 import 'package:riders_keeper/core/design_system/atoms/md_button/md_button.dart';
 import 'package:riders_keeper/core/design_system/atoms/md_text/md_text.dart';
 import 'package:riders_keeper/core/enum/text_variant.dart';
+import 'package:riders_keeper/core/types/motorcycle_draft.dart';
 import 'package:riders_keeper/features/motorcycle/presentation/templates/add_motorcycle/add_motorcycle_template.dart';
 
 class AddMotorcycleScreen extends ConsumerStatefulWidget {
-  const AddMotorcycleScreen({super.key});
+  const AddMotorcycleScreen({this.initialDraft, super.key});
+
+  final MotorcycleDraft? initialDraft;
 
   @override
   ConsumerState<AddMotorcycleScreen> createState() =>
@@ -18,20 +21,32 @@ class AddMotorcycleScreen extends ConsumerStatefulWidget {
 
 class _AddMotorcycleScreenState extends ConsumerState<AddMotorcycleScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _brandController = TextEditingController();
-  final _modelController = TextEditingController();
-  final _yearController = TextEditingController();
-  final _plateNumberController = TextEditingController();
-  final _odometerController = TextEditingController();
-  final _nicknameController = TextEditingController();
+  late final TextEditingController _brandController;
+  late final TextEditingController _modelController;
+  late final TextEditingController _yearController;
+  late final TextEditingController _plateNumberController;
+  late final TextEditingController _odometerController;
+  late final TextEditingController _nicknameController;
 
-  bool _isLoading = false;
-  final bool _hasSelectedPhoto = false;
+  final bool _isLoading = false;
+  late final bool _hasSelectedPhoto;
   bool _isDirty = false;
 
   @override
   void initState() {
     super.initState();
+    final draft = widget.initialDraft;
+    _brandController = TextEditingController(text: draft?.brand ?? '');
+    _modelController = TextEditingController(text: draft?.model ?? '');
+    _yearController = TextEditingController(text: draft?.year ?? '');
+    _plateNumberController = TextEditingController(
+      text: draft?.plateNumber ?? '',
+    );
+    _odometerController = TextEditingController(
+      text: draft == null ? '' : draft.odometerKm.toString(),
+    );
+    _nicknameController = TextEditingController(text: draft?.nickname ?? '');
+    _hasSelectedPhoto = draft?.hasPhoto ?? false;
     for (final controller in [
       _brandController,
       _modelController,
@@ -165,16 +180,25 @@ class _AddMotorcycleScreenState extends ConsumerState<AddMotorcycleScreen> {
           color: AppColors.textSecondary,
         ),
         actions: [
-          MDButton(
-            label: 'KEEP EDITING',
-            width: 140,
-            variant: MDButtonVariant.outlined,
-            onPressed: () => Navigator.of(dialogContext).pop(false),
-          ),
-          MDButton(
-            label: 'DISCARD',
-            width: 110,
-            onPressed: () => Navigator.of(dialogContext).pop(true),
+          Row(
+            children: [
+              Expanded(
+                child: MDButton(
+                  label: 'Keep Editing',
+                  variant: MDButtonVariant.outlined,
+                  onPressed: () => Navigator.of(dialogContext).pop(false),
+                  labelFontSize: 12,
+                ),
+              ),
+              const SizedBox(width: 5),
+              Expanded(
+                child: MDButton(
+                  label: 'Discard',
+                  onPressed: () => Navigator.of(dialogContext).pop(true),
+                  labelFontSize: 12,
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -185,23 +209,21 @@ class _AddMotorcycleScreenState extends ConsumerState<AddMotorcycleScreen> {
     }
   }
 
-  Future<void> _submit() async {
+  void _submit() {
     FocusScope.of(context).unfocus();
     if (!(_formKey.currentState?.validate() ?? false)) return;
 
-    setState(() => _isLoading = true);
-    try {
-      // TODO: Save the motorcycle through the motorcycle repository.
-      await Future<void>.delayed(const Duration(milliseconds: 350));
-      if (!mounted) return;
-      _isDirty = false;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Motorcycle added to your garage.')),
-      );
-      ref.read(appRouterProvider).go(AppRoutes.garage);
-    } finally {
-      if (mounted) setState(() => _isLoading = false);
-    }
+    final draft = MotorcycleDraft(
+      brand: _brandController.text.trim(),
+      model: _modelController.text.trim(),
+      year: _yearController.text.trim(),
+      plateNumber: _plateNumberController.text.trim(),
+      odometerKm: int.parse(_odometerController.text.trim()),
+      nickname: _nicknameController.text.trim(),
+      hasPhoto: _hasSelectedPhoto,
+    );
+    _isDirty = false;
+    ref.read(appRouterProvider).go(AppRoutes.reviewMotorcycle, extra: draft);
   }
 
   @override

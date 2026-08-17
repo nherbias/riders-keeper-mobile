@@ -25,7 +25,9 @@ class _MotorcyclesScreenState extends ConsumerState<MotorcyclesScreen> {
     ),
   ];
 
-  void _openMotorcycle(MotorcycleData motorcycle) {}
+  void _openMotorcycle(MotorcycleData motorcycle) {
+    ref.read(appRouterProvider).go(AppRoutes.vehicleDetails, extra: motorcycle);
+  }
 
   void _addMotorcyclePhoto(MotorcycleData motorcycle) {}
 

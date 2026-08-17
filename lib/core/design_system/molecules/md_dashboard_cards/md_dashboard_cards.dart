@@ -314,6 +314,7 @@ class MDUpcomingMaintenanceRow extends StatelessWidget {
     required this.motorcycle,
     required this.service,
     required this.onTap,
+    this.showChevron = true,
     super.key,
   });
   final String month;
@@ -321,6 +322,7 @@ class MDUpcomingMaintenanceRow extends StatelessWidget {
   final String motorcycle;
   final String service;
   final VoidCallback onTap;
+  final bool showChevron;
 
   @override
   Widget build(BuildContext context) {
@@ -354,7 +356,8 @@ class MDUpcomingMaintenanceRow extends StatelessWidget {
               ],
             ),
           ),
-          const Icon(Icons.chevron_right, color: AppColors.neutral),
+          if (showChevron)
+            const Icon(Icons.chevron_right, color: AppColors.neutral),
         ],
       ),
     );
