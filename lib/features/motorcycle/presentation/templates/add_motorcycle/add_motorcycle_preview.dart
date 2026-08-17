@@ -6,6 +6,9 @@ import 'package:riders_keeper/features/motorcycle/presentation/templates/add_mot
 @Preview(name: 'Add Motorcycle', group: 'Motorcycle', size: Size(390, 844))
 Widget addMotorcyclePreview() => MDWidgetPreview(
   child: AddMotorcycleTemplate(
+    appBarTitle: 'Add Motorcycle',
+    submitLabel: 'ADD TO GARAGE',
+    submitIcon: Icons.two_wheeler_rounded,
     formKey: GlobalKey<FormState>(),
     brandController: TextEditingController(),
     modelController: TextEditingController(),

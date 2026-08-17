@@ -26,4 +26,5 @@ final mainNavigationRoutes = <RouteBase>[
       StatefulShellBranch(routes: profileRoutes),
     ],
   ),
+  ...secondaryNavigationRoutes,
 ];
