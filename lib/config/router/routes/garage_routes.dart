@@ -5,6 +5,13 @@ import 'package:riders_keeper/features/home/presentation/screens/needs_attention
 import 'package:riders_keeper/features/home/presentation/screens/predictions_screen.dart';
 import 'package:riders_keeper/features/motorcycle/presentation/screens/motorcycles_screen.dart';
 import 'package:riders_keeper/features/motorcycle/presentation/screens/add_motorcycle_screen.dart';
+import 'package:riders_keeper/features/motorcycle/presentation/screens/review_motorcycle_screen.dart';
+import 'package:riders_keeper/features/motorcycle/presentation/screens/vehicle_details_screen.dart';
+import 'package:riders_keeper/features/motorcycle/presentation/screens/service_history_screen.dart';
+import 'package:riders_keeper/features/motorcycle/presentation/screens/log_maintenance_screen.dart';
+import 'package:riders_keeper/core/types/motorcycle_draft.dart';
+import 'package:riders_keeper/core/types/motorcycle_form_arguments.dart';
+import 'package:riders_keeper/core/types/motorcycle_types.dart';
 
 final homeRoutes = <RouteBase>[
   GoRoute(
@@ -12,6 +19,17 @@ final homeRoutes = <RouteBase>[
     name: AppRouteNames.home,
     builder: (context, state) => const HomeScreen(),
   ),
+];
+
+final garageRoutes = <RouteBase>[
+  GoRoute(
+    path: AppRoutes.garage,
+    name: AppRouteNames.garage,
+    builder: (context, state) => const MotorcyclesScreen(),
+  ),
+];
+
+final secondaryNavigationRoutes = <RouteBase>[
   GoRoute(
     path: AppRoutes.needsAttention,
     name: AppRouteNames.needsAttention,
@@ -22,17 +40,76 @@ final homeRoutes = <RouteBase>[
     name: AppRouteNames.predictions,
     builder: (context, state) => const PredictionsScreen(),
   ),
-];
-
-final garageRoutes = <RouteBase>[
-  GoRoute(
-    path: AppRoutes.garage,
-    name: AppRouteNames.garage,
-    builder: (context, state) => const MotorcyclesScreen(),
-  ),
   GoRoute(
     path: AppRoutes.addMotorcycle,
     name: AppRouteNames.addMotorcycle,
-    builder: (context, state) => const AddMotorcycleScreen(),
+    builder: (context, state) {
+      final arguments = state.extra is MotorcycleFormArguments
+          ? state.extra! as MotorcycleFormArguments
+          : null;
+      return AddMotorcycleScreen(
+        initialDraft:
+            arguments?.draft ??
+            (state.extra is MotorcycleDraft
+                ? state.extra! as MotorcycleDraft
+                : null),
+        mode: arguments?.mode ?? MotorcycleFormMode.create,
+        originalMotorcycle: arguments?.originalMotorcycle,
+      );
+    },
+  ),
+  GoRoute(
+    path: AppRoutes.reviewMotorcycle,
+    name: AppRouteNames.reviewMotorcycle,
+    builder: (context, state) => ReviewMotorcycleScreen(
+      draft: state.extra is MotorcycleDraft
+          ? state.extra! as MotorcycleDraft
+          : const MotorcycleDraft.empty(),
+    ),
+  ),
+  GoRoute(
+    path: AppRoutes.vehicleDetails,
+    name: AppRouteNames.vehicleDetails,
+    builder: (context, state) => VehicleDetailsScreen(
+      motorcycle: state.extra is MotorcycleData
+          ? state.extra! as MotorcycleData
+          : const MotorcycleData(
+              brand: 'Honda',
+              model: 'CB650R',
+              plateNumber: 'RK-2024-NEO',
+              odometerKm: 12450,
+              isActive: true,
+            ),
+    ),
+  ),
+  GoRoute(
+    path: AppRoutes.serviceHistory,
+    name: AppRouteNames.serviceHistory,
+    builder: (context, state) => ServiceHistoryScreen(
+      motorcycle: state.extra is MotorcycleData
+          ? state.extra! as MotorcycleData
+          : const MotorcycleData(
+              brand: 'Honda',
+              model: 'CB650R',
+              plateNumber: 'RK-2024-NEO',
+              odometerKm: 12450,
+              isActive: true,
+            ),
+    ),
+  ),
+  GoRoute(
+    path: AppRoutes.logMaintenance,
+    name: AppRouteNames.logMaintenance,
+    builder: (context, state) => LogMaintenanceScreen(
+      motorcycle: state.extra is MotorcycleData
+          ? state.extra! as MotorcycleData
+          : const MotorcycleData(
+              brand: 'Honda',
+              model: 'CB650R',
+              plateNumber: 'RK-2024-NEO',
+              odometerKm: 12450,
+              isActive: true,
+            ),
+    ),
   ),
 ];

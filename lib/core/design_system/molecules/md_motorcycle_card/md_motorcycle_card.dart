@@ -14,6 +14,7 @@ class MDMotorcycleCard extends StatelessWidget {
     this.imageAsset,
     this.isActive = false,
     this.onAddPhoto,
+    this.onUpdateOdometer,
     super.key,
   });
 
@@ -25,6 +26,7 @@ class MDMotorcycleCard extends StatelessWidget {
   final bool isActive;
   final VoidCallback onTap;
   final VoidCallback? onAddPhoto;
+  final VoidCallback? onUpdateOdometer;
 
   @override
   Widget build(BuildContext context) {
@@ -40,17 +42,20 @@ class MDMotorcycleCard extends StatelessWidget {
           child: ExcludeSemantics(
             child: Material(
               color: AppColors.surface,
-              borderRadius: BorderRadius.circular(22),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(22),
+                side: BorderSide(color: AppColors.border.withValues(alpha: .5)),
+              ),
               clipBehavior: Clip.antiAlias,
-              elevation: 1,
-              shadowColor: Colors.black.withValues(alpha: .12),
+              elevation: 2,
+              shadowColor: Colors.black.withValues(alpha: .1),
               child: InkWell(
                 onTap: onTap,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     SizedBox(
-                      height: 170,
+                      height: 164,
                       child: Stack(
                         fit: StackFit.expand,
                         children: [
@@ -71,8 +76,8 @@ class MDMotorcycleCard extends StatelessWidget {
                               top: 16,
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                  vertical: 9,
+                                  horizontal: 12,
+                                  vertical: 7,
                                 ),
                                 decoration: BoxDecoration(
                                   color: AppColors.surface.withValues(
@@ -104,7 +109,7 @@ class MDMotorcycleCard extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 17, 20, 20),
+                      padding: const EdgeInsets.fromLTRB(18, 16, 18, 18),
                       child: Column(
                         children: [
                           Row(
@@ -125,72 +130,99 @@ class MDMotorcycleCard extends StatelessWidget {
                                     MDText(
                                       model,
                                       variant: MDTextVariant.title,
-                                      fontWeight: FontWeight.w700,
+                                      fontWeight: FontWeight.w800,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   ],
                                 ),
                               ),
-                              const SizedBox(width: 16),
+                              const SizedBox(width: 12),
                               Flexible(
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Flexible(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          const MDText(
-                                            'Plate Number',
-                                            variant: MDTextVariant.bodySmall,
-                                            color: AppColors.textSecondary,
-                                          ),
-                                          MDText(
-                                            plateNumber,
-                                            variant: MDTextVariant.titleSmall,
-                                            fontWeight: FontWeight.w800,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ],
+                                child: Container(
+                                  padding: const EdgeInsets.fromLTRB(
+                                    10,
+                                    8,
+                                    8,
+                                    8,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.secondary,
+                                    borderRadius: BorderRadius.circular(13),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Icon(
+                                        Icons.confirmation_number_outlined,
+                                        size: 17,
+                                        color: AppColors.textSecondary,
                                       ),
-                                    ),
-                                    const SizedBox(width: 5),
-                                    const Icon(
-                                      Icons.chevron_right_rounded,
-                                      size: 21,
-                                      color: AppColors.neutral,
-                                    ),
-                                  ],
+                                      const SizedBox(width: 7),
+                                      Flexible(
+                                        child: MDText(
+                                          plateNumber,
+                                          variant: MDTextVariant.labelMedium,
+                                          fontWeight: FontWeight.w800,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 3),
+                                      const Icon(
+                                        Icons.chevron_right_rounded,
+                                        size: 19,
+                                        color: AppColors.neutral,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ],
                           ),
                           const SizedBox(height: 16),
                           Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 13,
-                            ),
+                            padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
                               color: AppColors.secondary,
                               borderRadius: BorderRadius.circular(16),
                             ),
                             child: Row(
                               children: [
-                                const Icon(
-                                  Icons.speed_outlined,
-                                  color: AppColors.textSecondary,
+                                Container(
+                                  width: 36,
+                                  height: 36,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.primary,
+                                    borderRadius: BorderRadius.circular(11),
+                                  ),
+                                  child: const Icon(
+                                    Icons.speed_outlined,
+                                    size: 20,
+                                    color: AppColors.surface,
+                                  ),
                                 ),
-                                const SizedBox(width: 10),
-                                const MDText(
-                                  'Odometer',
-                                  variant: MDTextVariant.bodyMedium,
-                                  color: AppColors.textSecondary,
+                                const SizedBox(width: 11),
+                                const Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      MDText(
+                                        'ODOMETER',
+                                        variant: MDTextVariant.labelSmall,
+                                        color: AppColors.textSecondary,
+                                        fontWeight: FontWeight.w700,
+                                        letterSpacing: .6,
+                                      ),
+                                      MDText(
+                                        'Current reading',
+                                        variant: MDTextVariant.labelSmall,
+                                        color: AppColors.textSecondary,
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                const Spacer(),
                                 MDText(
                                   _formatNumber(odometerKm),
                                   variant: MDTextVariant.title,
@@ -204,6 +236,10 @@ class MDMotorcycleCard extends StatelessWidget {
                               ],
                             ),
                           ),
+                          if (onUpdateOdometer != null) ...[
+                            const SizedBox(height: 9),
+                            _OdometerUpdatePrompt(onPressed: onUpdateOdometer!),
+                          ],
                         ],
                       ),
                     ),
@@ -229,6 +265,66 @@ class MDMotorcycleCard extends StatelessWidget {
   String _formatNumber(int value) {
     final digits = value.toString();
     return digits.replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (_) => ',');
+  }
+}
+
+class _OdometerUpdatePrompt extends StatelessWidget {
+  const _OdometerUpdatePrompt({required this.onPressed});
+
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: AppColors.secondary,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(14),
+        side: BorderSide(color: AppColors.border.withValues(alpha: .65)),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: onPressed,
+        child: const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          child: Row(
+            children: [
+              Icon(
+                Icons.auto_graph_rounded,
+                size: 18,
+                color: AppColors.primary,
+              ),
+              SizedBox(width: 8),
+              Expanded(
+                child: MDText(
+                  'Update mileage for better predictions',
+                  variant: MDTextVariant.labelSmall,
+                  color: AppColors.textPrimary,
+                  fontWeight: FontWeight.w700,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              SizedBox(width: 8),
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  color: AppColors.primary,
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 9, vertical: 6),
+                  child: MDText(
+                    'UPDATE',
+                    variant: MDTextVariant.labelSmall,
+                    color: AppColors.surface,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 

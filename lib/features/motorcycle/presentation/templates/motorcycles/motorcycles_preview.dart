@@ -19,5 +19,7 @@ Widget motorcyclesPreview() => MDWidgetPreview(
     onMotorcyclePressed: (_) {},
     onAddPhotoPressed: (_) {},
     onAddMotorcyclePressed: () {},
+    odometerReminderPlateNumbers: const {'RK-2024-NEO'},
+    onUpdateOdometerPressed: (_) {},
   ),
 );
